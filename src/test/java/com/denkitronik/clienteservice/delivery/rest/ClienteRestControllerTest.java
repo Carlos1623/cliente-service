@@ -117,9 +117,7 @@ class ClienteRestControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(cliente)))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.errors").isArray())
-                .andExpect(jsonPath("$.errors", org.hamcrest.Matchers.hasItem(
-                        org.hamcrest.Matchers.containsString("nombre"))));
+                .andExpect(jsonPath("$.nombre").isNotEmpty());
     }
 
     @Test
