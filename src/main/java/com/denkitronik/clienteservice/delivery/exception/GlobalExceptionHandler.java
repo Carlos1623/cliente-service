@@ -52,21 +52,24 @@ public class GlobalExceptionHandler {
 
     // ── 400 Bad Request (validaciones @Valid) ─────────────────
     @ExceptionHandler(MethodArgumentNotValidException.class)
-    public ResponseEntity<Map<String, String>> manejarValidacion(
+    public ResponseEntity<Map<String, Object>> manejarValidacion(
             MethodArgumentNotValidException ex) {
 
         Map<String, String> errores = new HashMap<>();
         ex.getBindingResult()
-          .getAllErrors()
-          .forEach(error -> {
-              String campo   = ((FieldError) error).getField();
-              String mensaje = error.getDefaultMessage();
-              errores.put(campo, mensaje);
-          });
+                .getAllErrors()
+                .forEach(error -> {
+                    String campo   = ((FieldError) error).getField();
+                    String mensaje = error.getDefaultMessage();
+                    errores.put(campo, mensaje);
+                });
 
         log.debug("Errores de validación: {}", errores);
 
-        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(errores);
+        Map<String, Object> body = new HashMap<>();
+        body.put("errors", errores);
+
+        return ResponseEntity.status(HttpStatus.BAD_REQUEST).body(body);
     }
 
     // ── 400 Bad Request (JSON mal formado o id no numérico) ───

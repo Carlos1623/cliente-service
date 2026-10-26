@@ -117,7 +117,7 @@ class ClienteRestControllerTest {
                         .contentType(MediaType.APPLICATION_JSON)
                         .content(objectMapper.writeValueAsString(cliente)))
                 .andExpect(status().isBadRequest())
-                .andExpect(jsonPath("$.nombre").isNotEmpty());
+                .andExpect(jsonPath("$.errors.nombre").isNotEmpty());
     }
 
     @Test
